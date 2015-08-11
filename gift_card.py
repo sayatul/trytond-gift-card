@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-    gift_card.py
-
-    :copyright: (c) 2014-2015 by Openlabs Technologies & Consulting (P) Limited
-    :license: BSD, see LICENSE for more details.
-"""
 from num2words import num2words
 
 from trytond.model import ModelSQL, ModelView, Workflow, fields

@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-    configuration.py
-
-    :copyright: (c) 2014 by Openlabs Technologies & Consulting (P) Limited
-    :license: BSD, see LICENSE for more details.
-"""
 from trytond.model import ModelView, ModelSQL, ModelSingleton, fields
 from trytond.pool import PoolMeta
 

@@ -337,17 +337,16 @@ class GiftCardReport(Report):
     __name__ = 'gift_card.gift_card'
 
     @classmethod
-    def parse(cls, report, records, data, localcontext):
+    def get_context(cls, records, data):
         """
         Update localcontext to add num2words
         """
-        localcontext.update({
-            'num2words': lambda *args, **kargs: num2words(
-                *args, **kargs)
-        })
-        return super(GiftCardReport, cls).parse(
-            report, records, data, localcontext
+        context = super(GiftCardReport, cls).get_context(records, data)
+
+        context['num2words'] = lambda *args, **kargs: num2words(
+            *args, **kargs
         )
+        return context
 
 
 class GiftCardRedeemStart(ModelView):

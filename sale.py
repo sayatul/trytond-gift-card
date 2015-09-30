@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from trytond.model import fields, ModelView
 from trytond.pool import PoolMeta, Pool
-from trytond.pyson import Eval, Bool
+from trytond.pyson import Eval, Bool, Get
 from trytond.wizard import Wizard
 
 __all__ = [
@@ -72,17 +72,27 @@ class SaleLine:
         ]
     )
 
+    @classmethod
+    def view_attributes(cls):
+        return super(SaleLine, cls).view_attributes() + [
+            ('//page[@id="gift_cards"]', 'states', {
+                'invisible': ~Bool(Eval('is_gift_card'))
+            }), ('//separator[@id="recipient_details"]', 'states', {
+                'invisible': ~Bool(Eval('is_gift_card'))
+            }), (
+                '//field[@name="message"]', 'spell',
+                Get(Eval('_parent_sale', {}), 'party_lang')
+            )]
+
     @fields.depends('product')
     def on_change_with_allow_open_amount(self, name=None):
         if self.product:
             return self.product.allow_open_amount
 
     @fields.depends('gc_price', 'unit_price')
-    def on_change_gc_price(self, name=None):
-        res = {}
+    def on_change_gc_price(self):
         if self.gc_price:
-            res['unit_price'] = self.gc_price.price
-        return res
+            self.unit_price = self.gc_price.price
 
     @classmethod
     def __setup__(cls):
@@ -143,20 +153,17 @@ class SaleLine:
 
         return lines
 
-    @fields.depends('is_gift_card')
+    @fields.depends('is_gift_card', 'product')
     def on_change_is_gift_card(self):
         ModelData = Pool().get('ir.model.data')
 
         if self.is_gift_card:
-            return {
-                'product': None,
-                'description': 'Gift Card',
-                'unit': ModelData.get_id('product', 'uom_unit'),
-            }
-        return {
-            'description': None,
-            'unit': None,
-        }
+            self.product = None
+            self.description = "Gift Card"
+            self.unit = ModelData.get_id('product', 'uom_unit')
+        else:
+            self.description = None
+            self.unit = None
 
     def create_gift_cards(self):
         '''

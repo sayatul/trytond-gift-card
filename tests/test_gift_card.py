@@ -593,16 +593,16 @@ class TestGiftCard(TestBase):
                     type='line', sale=None
                 )
 
-                on_change_vals = sale_line.on_change_is_gift_card()
-                self.assertTrue('description' in on_change_vals)
-                self.assertTrue('product' not in on_change_vals)
+                sale_line.on_change_is_gift_card()
+                self.assertEqual(sale_line.description, None)
+                self.assertEqual(sale_line.product, None)
 
                 sale_line.is_gift_card = True
-                on_change_vals = sale_line.on_change_is_gift_card()
+                sale_line.on_change_is_gift_card()
 
-                self.assertEqual(on_change_vals['product'], None)
-                self.assertTrue('description' in on_change_vals)
-                self.assertTrue('unit' in on_change_vals)
+                self.assertEqual(sale_line.product, None)
+                self.assertEqual(sale_line.description, 'Gift Card')
+                self.assertNotEqual(sale_line.unit, None)
 
     def test0040_gift_card_transition(self):
         """

@@ -82,7 +82,6 @@ requires = [
 MODULE2PREFIX = {
     'sale_payment_gateway': 'fio',
     'email_queue': 'fio',
-    'product_notebook': 'fio',
 }
 
 MODULE = "gift_card"

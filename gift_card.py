@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from num2words import num2words
 
-from trytond.model import ModelSQL, ModelView, Workflow, fields
+from trytond.model import ModelSQL, ModelView, Workflow, fields, Unique
 from trytond.pyson import Eval, If
 from trytond.wizard import Wizard, Button, StateView, StateTransition
 from trytond.pool import Pool
@@ -157,8 +157,9 @@ class GiftCard(Workflow, ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(GiftCard, cls).__setup__()
+        table = cls.__table__()
         cls._sql_constraints = [
-            ('number_uniq', 'UNIQUE(number)',
+            ('number_uniq', Unique(table, table.number),
              'The number of the gift card must be unique.')
         ]
         cls._error_messages.update({

@@ -131,13 +131,13 @@ class SaleLine:
         """
         return self.product and self.product.is_gift_card
 
-    def get_invoice_line(self, invoice_type):
+    def get_invoice_line(self):
         """
         Pick up liability account from gift card configuration for invoices
         """
         GiftCardConfiguration = Pool().get('gift_card.configuration')
 
-        lines = super(SaleLine, self).get_invoice_line(invoice_type)
+        lines = super(SaleLine, self).get_invoice_line()
 
         if lines and self.is_gift_card:
             liability_account = GiftCardConfiguration(1).liability_account

@@ -78,10 +78,6 @@
             <field name="action" ref="act_sales"/>
         </record>
 
-        <record id="gift_card_email_receivers" model="res.group">
-            <field name="name">Gift Card E-mail Receivers</field>
-        </record>
-
         <record model="ir.action-res.group" id="gift_card_redeem_wizard_group2">
             <field name="action" ref="gift_card_redeem_wizard"/>
             <field name="group" ref="account.group_account_admin"/>
